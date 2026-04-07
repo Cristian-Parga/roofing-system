@@ -1,0 +1,16 @@
+# Virtual environment
+venv/
+
+# Database file
+roofing.db
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code settings
+.vscode/
+
+# Environment variables
+.env

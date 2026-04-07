@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roofing Service Management System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <!-- Navigation bar -->
+    <nav>
+        <a href="/">Home</a>
+        {% if session.get('role') == 'customer' %}
+            <a href="/customer/dashboard">Dashboard</a>
+            <a href="/request/new">Request Inspection</a>
+            <a href="/reviews">Reviews</a>
+            <a href="/logout">Logout</a>
+        {% elif session.get('role') == 'admin' %}
+            <a href="/admin/dashboard">Admin Dashboard</a>
+            <a href="/admin/applications">Applications</a>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Create Account</a>
+        {% endif %}
+    </nav>
+
+    <h1>Roofing Service Management System</h1>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
