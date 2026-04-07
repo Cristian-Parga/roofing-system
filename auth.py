@@ -99,7 +99,7 @@ def login():
             flash('Incorrect email or password.', 'error')
             return redirect(url_for('auth.login'))
 
-    # GET request — just show the login form
+    # Get request: just show the login form
     return render_template('login.html')
 
 

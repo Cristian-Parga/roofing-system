@@ -2,7 +2,7 @@
 # Description: Main Flask application file for the
 #              Roofing Service Management System.
 # Author: Cristian Parga
-# Date: Apr 6, 2026
+# Date: Apr 4, 2026
 
 from flask import Flask, redirect, url_for
 from database import init_db
@@ -24,4 +24,4 @@ def home():
     return redirect(url_for('auth.login'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
