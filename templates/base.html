@@ -1,33 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Roofing Service Management System</title>
+    <title>Natsu Roofing</title>
+    <!-- Tab icon -->
+    <link rel="icon" type="image/png" href="/static/NatsuLogoHead.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
     <!-- Navigation bar -->
     <nav>
-        <a href="/">Home</a>
+    <div class="nav-brand">
+        <a href="/" class="nav-brand-link">
+            <img src="/static/NatsuLogoHorRight.png"
+                 alt="Natsu Roofing"
+                 class="nav-logo">
+        </a>
+    </div>
+
+    <div class="nav-links">
         {% if session.get('role') == 'customer' %}
             <a href="/customer/dashboard">Dashboard</a>
             <a href="/request/new">Request Inspection</a>
+            <a href="/payment">Payment</a>
             <a href="/reviews">Reviews</a>
-            <a href="/logout">Logout</a>
+            <a href="/logout" class="nav-logout">Logout ({{ session.get('user_name') }})</a>
         {% elif session.get('role') == 'admin' %}
             <a href="/admin/dashboard">Admin Dashboard</a>
             <a href="/admin/applications">Applications</a>
-            <a href="/logout">Logout</a>
+            <a href="/logout" class="nav-logout">Logout ({{ session.get('user_name') }})</a>
         {% else %}
             <a href="/login">Login</a>
             <a href="/register">Create Account</a>
+            <a href="/careers">Careers</a>
         {% endif %}
+    </div>
     </nav>
 
-    <h1>Roofing Service Management System</h1>
+    <!-- Main content area -->
+    <div class="main-content">
 
-    {% block content %}
-    {% endblock %}
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <img src="/static/NatsuLogoHead.png" 
+                 alt="Natsu Roofing" 
+                 class="footer-logo">
+            <p>© 2025 Natsu Roofing. All rights reserved.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
