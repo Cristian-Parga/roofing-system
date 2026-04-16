@@ -1,0 +1,29 @@
+<!-- Form for customers to submit their reviews-->
+ {% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Leave a Review</h2>
+    <form method = "POST" action = "/reviews/submit">
+        <div class = "form-group">
+            <label for = "starRating">Star Rating:</label>
+            <select name = "starRating" required>
+                <option value = "">Select your rating</option>
+                <option value = "1">★ 1 Star</option>
+                <option value = "2">★★ 2 Stars</option>
+                <option value = "3">★★★ 3 Stars</option>
+                <option value = "4">★★★★ 4 Stars</option>
+                <option value = "5">★★★★★ 5 Stars</option>
+            </select>
+        </div>
+        <div class = "form-group">
+            <label>Your review</label>
+            <textarea name = "comment"
+                      placeholder = "Write your review here..." 
+                      required></textarea>
+        </div>
+        <button type = "submit" class = "btn">Submit Review</button>
+        <a href = "/reviews" style = "margin-left: 16px; font-size: 14px;">Cancel</a>
+    </form>
+</div>
+{% endblock %}
