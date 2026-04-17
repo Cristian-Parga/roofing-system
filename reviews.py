@@ -3,7 +3,6 @@
 # Description: Handles the reviews page for the Natsu Roofing Service Management System.
 
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-import flask
 from database import get_db
 from datetime import date
 
@@ -15,9 +14,10 @@ def view_reviews():
     """Display all reviews sorted by most recent."""
     conn = get_db()
     all_reviews = conn.execute('''
-                               SELECT review.*, customer.name as customer_name
+                               SELECT review.*, customer.name as customerName
                                FROM review
-                               JOIN customer ON review.customer_id = customer.id
+                               JOIN customer ON review.customerID = customer.customerID
+                               ORDER BY review.submittedDate DESC
                                ''').fetchall()
     conn.close()
     return render_template('reviews.html', reviews=all_reviews)
@@ -32,19 +32,23 @@ def submit_review():
     
     if request.method == 'POST':
         customer_id = session.get('user_id')
-        star_rating = request.form('starRating')
-        comments = request.form('comments')
+        star_rating = request.form['starRating']
+        comments = request.form['comments']
         today = str(date.today())
     # Validate input
         if not comments:
             flash('Please enter a comment.', 'error')
             return redirect(url_for('reviews.submit_review'))
-
+        #Validate star rating
+        if not star_rating or int(star_rating) < 1 or int(star_rating) > 5:
+            flash('Please select a star rating between 1 and 5.', 'error')
+            return redirect(url_for('reviews.submit_review'))
+        # Save review to database
         conn = get_db()
         conn.execute('''
             INSERT INTO review (customerID, starRating, comments, submittedDate)
             VALUES (?, ?, ?, ?)
-        ''', (customer_id, star_rating, comments, today))
+        ''', (customer_id, int(star_rating), comments, today))
         conn.commit()
         conn.close()
 
