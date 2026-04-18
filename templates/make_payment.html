@@ -1,0 +1,60 @@
+<!-- Payment form for estimate -->
+
+{% extends 'base.html' %}
+{% block content %}
+<div class = "form-container">
+    <h2>Make a Payment</h2>
+    <!--- Estimate summary -->
+    <div class = "card" style = "margin-bottom: 24px;">
+        <p><strong>Property:</strong> {{ estimate['propertyAddress'] }}</p>
+        <p><strong>Total Cost:</strong> ${{ "%.2f"|format(estimate['totalCost']) }}</p>
+        <p><strong>Amount Paid:</strong> ${{ "%.2f"|format(estimate['amountPaid']) }}</p>
+        <p style = "color: #8B1A1A; font-size: 16px; margin-top: 8px;">
+            <strong>Balance Due: ${{ "%.2f"|format(estimate['balance']) }}</strong>
+        </p>
+    </div>
+    <form method = "POST" action = "/payment/{{ estimate['estimateID'] }}">
+        <div class = "form-group">
+            <label>Payment Amount ($)</label>
+            <input type = "number" 
+                    step = "0.01" 
+                    name = "amount" 
+                    min ="0.01" 
+                    max = "{{ estimate['balance'] }}"
+                   value = {{ "%.2f"|format(estimate['balance']) }}"
+                   required>
+        </div>
+        <div class = "form-group">
+            <label>Card Number</label>
+            <input type = "text" 
+                    name = "cardNumber" 
+                    placeholder = "1234 5678 9812 3456"
+                    maxlength = "19"
+                    pattern = "\d{4} \d{4} \d{4} \d{4}"
+                    required>
+        </div>
+        <div style = "display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class = "form-group">
+                <label>Expiry Date</label>
+                <input type = "text" 
+                        name = "expiry" 
+                        placeholder = "MM/YY"
+                        maxlength = "5"
+                        pattern = "(0[1-9]|1[0-2])\/\d{2}"
+                        required>
+            </div>
+            <div class = "form-group">
+                <label>CVV</label>
+                <input type = "text" 
+                        name = "cvv" 
+                        placeholder = "123"
+                        maxlength = "4"
+                        pattern = "\d{3,4}"
+                        required>
+            </div>
+        </div>
+        <button type = "submit" class = "btn">Submit Payment</button>
+        <a href = "/payment" style = "margin-left: 16px; font-size: 14px;">Cancel</a>
+    </form>
+</div>
+{% endblock %}
