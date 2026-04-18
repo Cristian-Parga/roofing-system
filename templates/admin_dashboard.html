@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Admin Dashboard - Inspection Requests</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Customer</th>
+                <th>Property Address</th>
+                <th>Status</th>
+                <th>Emergency</th>
+                <th>Submitted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+            <tr>
+                <td>#{{ req.requestID }}</td>
+                <td>{{ req.customerName }}<br><small>{{ req.email }}</small></td>
+                <td>{{ req.propertyAddress }}</td>
+                <td>
+                    <span class="badge badge-{{ 'warning' if req.status == 'Pending' else 'success' if req.status in ['Completed', 'Paid'] else 'info' }}">
+                        {{ req.status }}
+                    </span>
+                </td>
+                <td>{% if req.isEmergency %}🚨 Yes{% else %}No{% endif %}</td>
+                <td>{{ req.submittedDate }}</td>
+                <td>
+                    <a href="{{ url_for('admin.update_status', request_id=req.requestID) }}" 
+                       class="btn btn-sm btn-primary">Update Status</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-center">No inspection requests found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
