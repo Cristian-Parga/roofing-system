@@ -32,7 +32,7 @@ def submit_application():
     
     if not applicant_name or not email or '@' not in email:
         flash('Please fill in all required fields with valid information.', 'error')
-        return redirect(url_for('careers.careers_page'))
+        return render_template('careers.html', form_name = applicant_name, form_email = email, form_phone = phone)
     
     # Handle resume upload
     resume_file = request.files.get('resume')
@@ -47,7 +47,7 @@ def submit_application():
         resume_file.save(os.path.join(upload_folder, resume_filename))
     else:
         flash('Please upload a valid resume file (PDF, DOC, DOCX, or TXT).', 'error')
-        return redirect(url_for('careers.careers_page'))
+        return render_template('careers.html', form_name = applicant_name, form_email = email, form_phone = phone)
     
     # Save to database
     conn = get_db()

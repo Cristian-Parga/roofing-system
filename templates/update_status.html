@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="form-container">
-    <h2>Update Request #{{ request.requestID }} Status</h2>
+    <h2>Update Request #{{ req_data.requestID }} Status</h2>
     
     <div class="request-details">
-        <p><strong>Customer:</strong> {{ request.customerName }} ({{ request.email }})</p>
-        <p><strong>Property:</strong> {{ request.propertyAddress }}</p>
-        <p><strong>Current Status:</strong> {{ request.status }}</p>
-        <p><strong>Description:</strong> {{ request.description }}</p>
+        <p><strong>Customer:</strong> {{ req_data.requestID.customerName }} ({{ req_data.requestID.email }})</p>
+        <p><strong>Property:</strong> {{ req_data.requestID.propertyAddress }}</p>
+        <p><strong>Current Status:</strong> {{ req_data.requestID.status }}</p>
+        <p><strong>Description:</strong> {{ req_data.requestID.description }}</p>
         {% if request.isEmergency %}
             <p class="alert alert-warning">⚠️ This is an EMERGENCY request</p>
         {% endif %}

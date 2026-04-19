@@ -33,7 +33,7 @@ def dashboard():
         ORDER BY ir.submittedDate DESC
     ''').fetchall()
     conn.close()
-    return render_template('admin_dashboard.html', requests=requests)
+    return render_template('admin_dashboard.html', requests=requests_list)
 
 @admin_bp.route('/update-status/<int:request_id>', methods=['GET', 'POST'])
 @admin_required
@@ -72,7 +72,7 @@ def update_status(request_id):
         flash('Request not found.', 'error')
         return redirect(url_for('admin.dashboard'))
     
-    return render_template('update_status.html', request=request_data)
+    return render_template('update_status.html', red_data = request_data)
 
 @admin_bp.route('/applications')
 @admin_required
