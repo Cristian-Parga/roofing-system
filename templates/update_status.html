@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Update Request #{{ req_data.requestID }} Status</h2>
+    
+    <div class="request-details">
+        <p><strong>Customer:</strong> {{ req_data.requestID.customerName }} ({{ req_data.requestID.email }})</p>
+        <p><strong>Property:</strong> {{ req_data.requestID.propertyAddress }}</p>
+        <p><strong>Current Status:</strong> {{ req_data.requestID.status }}</p>
+        <p><strong>Description:</strong> {{ req_data.requestID.description }}</p>
+        {% if request.isEmergency %}
+            <p class="alert alert-warning">⚠️ This is an EMERGENCY request</p>
+        {% endif %}
+    </div>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="status">New Status</label>
+            <select name="status" id="status" class="form-control" required>
+                <option value="">-- Select Status --</option>
+                <option value="Pending" {% if request.status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Emergency Flagged" {% if request.status == 'Emergency Flagged' %}selected{% endif %}>Emergency Flagged</option>
+                <option value="Scheduled" {% if request.status == 'Scheduled' %}selected{% endif %}>Scheduled</option>
+                <option value="In Progress" {% if request.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                <option value="Estimate Sent" {% if request.status == 'Estimate Sent' %}selected{% endif %}>Estimate Sent</option>
+                <option value="Approved" {% if request.status == 'Approved' %}selected{% endif %}>Approved</option>
+                <option value="Cancelled" {% if request.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                <option value="Payment Pending" {% if request.status == 'Payment Pending' %}selected{% endif %}>Payment Pending</option>
+                <option value="Paid" {% if request.status == 'Paid' %}selected{% endif %}>Paid</option>
+                <option value="Completed" {% if request.status == 'Completed' %}selected{% endif %}>Completed</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Update Status</button>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
