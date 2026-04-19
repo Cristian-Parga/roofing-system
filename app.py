@@ -10,6 +10,7 @@ from auth import auth
 from reviews import reviews
 from admin import admin_bp
 from careers import careers_bp
+from payment import payment
 
 app = Flask(__name__)
 app.secret_key = 'roofing_secret_key_2024'
@@ -20,6 +21,7 @@ app.register_blueprint(reviews)
 app.register_blueprint(admin_bp)
 app.register_blueprint(careers_bp)
 
+app.register_blueprint(payment)
 # Initiate database tables when the app opens
 with app.app_context():
     init_db()
