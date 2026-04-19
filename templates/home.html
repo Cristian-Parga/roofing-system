@@ -1,0 +1,70 @@
+<!-- Homepage -->
+
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Homepage Headline -->
+<div class = "hero">
+    <div class = "hero-content">
+        <img src = "/static/NatsuLogoHorRight.png" 
+             alt = "Natsu Roofing" 
+             class = "hero-logo">
+        <p class = "hero-tagline">Houston's Trusted Roofing Experts</p>
+        <p class = "hero-description">
+            From storm damage to full replacements, we handle it all. 
+            Submit your inspection request online and track your project 
+            every step of the way.
+        </p>
+        <div class = "hero-buttons">
+            <a href = "/register" class = "btn">Get Started</a>
+            <a href = "/login" class = "btn-secondary" style="margin-left: 16px;">Login</a>
+        </div>
+    </div>
+</div>
+
+<!-- Features -->
+ <div class = "features-section">
+    <h2 style = "text-align: center; margin-bottom: 30px;">Why Choose Natsu Roofing?</h2>
+    <div class = "dashboard-grid">
+
+        <div class = "feature-card">
+            <div class = "feature-icon">🏠</div>
+            <h3>Request Inspection</h3>
+            <p>Submit an inspection request online in minutes. Upload photos and describe the issue from the comfort of your home.</p>
+        </div>
+
+        <div class = "feature-card">
+            <div class = "feature-icon">⚡</div>
+            <h3>Emergency Service</h3>
+            <p>Storm damage cannot wait. Flag your request as an emergency and our team gets notified immediately.</p>
+        </div>
+
+        <div class = "feature-card">
+            <div class = "feature-icon">📋</div>
+            <h3>Track Your Project</h3>
+            <p>Log in anytime to see the current status of your roofing project from Scheduled all the way to Completed.</p>
+        </div>
+
+        <div class = "feature-card">
+            <div class = "feature-icon">💳</div>
+            <h3>Easy Payments</h3>
+            <p>Pay your estimate online securely. Get a digital receipt instantly and view your full payment history anytime.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class = "cta-section">
+    <h2>Ready to get started?</h2>
+    <p>Create a free account and submit your first inspection request today.</p>
+    <a href = "/register" class = "btn" style = "margin-top: 16px;">Create Free Account</a>
+</div>
+
+<!-- Public links -->
+<div class = "public-links">
+    <a href = "/reviews">Read Customer Reviews</a>
+    <span style="margin: 0 16px; color: #888888;">|</span>
+    <a href = "/careers">Join Our Team</a>
+</div>
+
+{% endblock %}
