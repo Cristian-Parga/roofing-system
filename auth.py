@@ -85,7 +85,7 @@ def login():
             session['user_name'] = customer['name']
             session['role']      = 'customer'
             flash('Welcome back, ' + customer['name'] + '!', 'success')
-            return redirect(url_for('customer.dashboard')) # Change to reviews.view_reviews" to view reviews
+            return redirect(url_for('customer.dashboard')) # Change to reviews.view_reviews" to view reviews, back to customer.dashboard
 
         # Validate admin login
         elif admin and check_password_hash(admin['password'], password):

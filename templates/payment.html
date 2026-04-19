@@ -1,0 +1,47 @@
+<!-- Show estimates for payment -->
+{% extends 'base.html' %}
+{% block content %}
+<div class = "page-header">
+    <h1>My Estimates</h1>
+    <a href = "/payment/history" class = "btn-secondary">Payment History</a>
+</div>
+{% if estimates %}
+    <table>
+        <thead>
+            <tr>
+                <th>Property</th>
+                <th>Total Cost</th>
+                <th>Amount Paid</th>
+                <th>Balance Due</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for estimate in estimates %}
+            <tr>
+                <td>{{ estimate['propertyAddress'] }}</td>
+                <td>${{ "%.2f"|format(estimate['totalCost']) }}</td>
+                <td>${{ "%.2f"|format(estimate['amountPaid']) }}</td>
+                <td>
+                    <strong style = "color: #8B1A1A">
+                        ${{ "%.2f"|format(estimate['balance']) }}
+                    </strong>
+                </td>
+                <td>
+                    {% if estimate['balance'] > 0 %}
+                        <a href = "/payment/{{ estimate['estimateID'] }}"
+                            class = "btn-small">Make Payment</a>
+                    {% else %}
+                        <span class = "status-badge status-paid">Paid in Full</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class = "card">
+        <p>You have no estimates ready. Request an inspection to get started!</p>
+    </div>
+{% endif %}
+{% endblock %}
