@@ -1,0 +1,28 @@
+#customer_logic.py
+
+import uuid
+
+requests = {}
+
+def submit_request(name, address, description, contact_time, emergency=False):
+    rid = "REQ-" + str(uuid.uuid4())[:5].upper()
+    requests[rid] = {
+        "name": name,
+        "address": address,
+        "description": description,
+        "contact_time": contact_time,
+        "emergency": emergency,
+        "status": "Submitted"
+    }
+    print(f"Request submitted: {rid}")
+    return rid
+
+def update_status(rid, status):
+    if rid in requests:
+        requests[rid]["status"] = status
+        print(f"{rid} → {status}")
+
+def show_requests(name):
+    for rid, r in requests.items():
+        if r["name"] == name:
+            print(f"{rid} | {r['address']} | {r['status']}")
