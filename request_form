@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natsu Roofing – New Request</title>
+
+</head>
+<body>
+<header>
+  <span style="font-size:26px">🏠</span>
+  <div><div class="logo">Natsu Roofing</div><div class="sub">Customer Portal</div></div>
+</header>
+<nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="request_form.html" class="active">New Request</a>
+  <a href="status.html">Status</a>
+</nav>
+<div class="wrap">
+  <div class="card">
+    <label>📍 Property Address *</label>
+    <input type="text" id="addr" placeholder="123 Main St, Houston TX">
+ 
+    <label>📝 Description *</label>
+    <textarea id="desc" placeholder="Describe the roofing issue (e.g. leak, storm damage, missing shingles)..."></textarea>
+ 
+    <label>📷 Photos</label>
+    <div class="upload" onclick="document.getElementById('photos').click()">
+      <input type="file" id="photos" accept="image/*" multiple style="display:none" onchange="document.getElementById('up-lbl').textContent=this.files.length+' file(s) selected'">
+      <span id="up-lbl">Click to upload photos of the damage</span>
+    </div>
+ 
+    <label>🕐 Preferred Contact Time *</label>
+    <select id="time">
+      <option value="">-- Select --</option>
+      <option>Morning (8am–12pm)</option>
+      <option>Afternoon (12pm–5pm)</option>
+      <option>Evening (5pm–8pm)</option>
+      <option>Anytime</option>
+    </select>
+ 
+    <div class="emergency-box">
+      <input type="checkbox" id="emerg">
+      <div><strong style="color:#c0392b">🚨 Emergency</strong><br><small style="color:#888">Check if there is active leaking or structural damage requiring urgent attention</small></div>
+    </div>
+ 
+    <button class="btn" onclick="submitForm()">Submit Request</button>
+    <div class="success" id="ok">✅ Your request has been submitted! Natsu Roofing will contact you shortly.</div>
+  </div>
+</div>
+<script>
+  function submitForm() {
+    const addr = document.getElementById('addr').value.trim();
+    const desc = document.getElementById('desc').value.trim();
+    const time = document.getElementById('time').value;
+    if (!addr || !desc || !time) { alert('Please fill in all required fields.'); return; }
+    document.getElementById('ok').style.display = 'block';
+    setTimeout(() => window.location.href = 'dashboard.html', 2500);
+  }
+</script>
+</body>
+</html>
+ 
