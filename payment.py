@@ -77,8 +77,19 @@ def make_payment(estimate_id):
         if not card_number.isdigit() or not cvv.isdigit():
             flash('Card number and CVV must be numeric.', 'error')
             return redirect(url_for('payment.make_payment', estimate_id=estimate_id))
-        if expiry < date.today().strftime('%m/%y'):
-            flash('Card has expired.', 'error')
+        # Validate expiry is not in the past
+        try:
+            exp_month, exp_year = expiry.split('/')
+            exp_month = int(exp_month)
+            exp_year = int('20' + exp_year)
+            today = date.today()
+            if exp_year < today.year or (exp_year == today.year and exp_month < today.month):
+                flash('Card has expired.', 'error')
+                conn.close()
+                return redirect(url_for('payment.make_payment', estimate_id=estimate_id))
+        except ValueError:
+            flash('Expiry must be in MM/YY format.', 'error')
+            conn.close()
             return redirect(url_for('payment.make_payment', estimate_id=estimate_id))
         # Convert amount to float and validate
         try:
@@ -145,7 +156,7 @@ def receipt(receipt_number):
         JOIN inspection_request ON estimate.requestID = inspection_request.requestID
         WHERE payment.receiptNumber = ?
         ORDER BY payment.paymentDate DESC
-    ''', (receipt_number,)).fetchall()
+    ''', (receipt_number,)).fetchone()
     conn.close()
     if not payment_record:
         flash('Receipt not found.', 'error')

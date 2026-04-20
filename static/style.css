@@ -1,6 +1,136 @@
 /* Import Google font */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
+/* Homepage Headline */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(44,24,16,0.10);
+    margin-bottom: 40px;
+    border-top: 4px solid #8B1A1A;
+    overflow: visible;
+}
+
+.hero-logo {
+    height: 480px;
+    width: auto;
+    margin-bottom: 24px;
+    overflow: visible;
+}
+
+.hero-tagline {
+    font-size: 28px;
+    font-weight: bold;
+    color: #8B1A1A;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+}
+
+.hero-description {
+    font-size: 16px;
+    color: #555555;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    line-height: 1.8;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* Feature section */
+.features-section {
+    margin-bottom: 40px;
+}
+
+.feature-card {
+    background-color: #FFFFFF;
+    padding: 28px 24px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(44,24,16,0.10);
+    border-top: 4px solid #C4460A;
+    transition: transform 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+}
+
+.feature-icon {
+    font-size: 36px;
+    margin-bottom: 14px;
+}
+
+.feature-card h3 {
+    color: #8B1A1A;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.feature-card p {
+    color: #666666;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Call to action */
+.cta-section {
+    background-color: #8B1A1A;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 48px 24px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.cta-section h2 {
+    color: #FFFFFF;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.cta-section p {
+    color: #F5D5C5;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.cta-section .btn {
+    background-color: #FFFFFF;
+    color: #8B1A1A;
+    font-size: 16px;
+    padding: 12px 32px;
+}
+
+.cta-section .btn:hover {
+    background-color: #F5F0E8;
+}
+
+/* Public Links */
+.public-links {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.public-links a {
+    color: #8B1A1A;
+    font-weight: bold;
+}
+
+.public-links a:hover {
+    color: #C4460A;
+}
+
 /* Reset and base */
 * {
     margin: 0;
@@ -233,15 +363,16 @@ h3 {
 .btn-secondary {
     background-color: #C4460A;
     color: #FFFFFF;
-    padding: 8px 20px;
+    padding: 11px 28px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-family: 'Bebas Neue', Arial, sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     letter-spacing: 1px;
     transition: background-color 0.2s;
     display: inline-block;
+    margin-top: 0;
 }
 
 .btn-secondary:hover {

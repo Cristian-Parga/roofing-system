@@ -25,7 +25,7 @@ def dashboard():
     """Display all inspection requests with current status (Use Case 4)"""
     conn = get_db()
     # Fetch requests with customer info via JOIN
-    requests = conn.execute('''
+    inspection_requests = conn.execute('''
         SELECT ir.requestID, ir.propertyAddress, ir.status, ir.isEmergency, 
                ir.submittedDate, c.name as customerName, c.email
         FROM inspection_request ir
@@ -33,7 +33,7 @@ def dashboard():
         ORDER BY ir.submittedDate DESC
     ''').fetchall()
     conn.close()
-    return render_template('admin_dashboard.html', requests=requests_list)
+    return render_template('admin_dashboard.html', requests = inspection_requests)
 
 @admin_bp.route('/update-status/<int:request_id>', methods=['GET', 'POST'])
 @admin_required
@@ -72,7 +72,7 @@ def update_status(request_id):
         flash('Request not found.', 'error')
         return redirect(url_for('admin.dashboard'))
     
-    return render_template('update_status.html', red_data = request_data)
+    return render_template('update_status.html', req_data = request_data)
 
 @admin_bp.route('/applications')
 @admin_required
