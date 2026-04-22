@@ -26,14 +26,21 @@ app.register_blueprint(payment)
 with app.app_context():
     init_db()
 
+# Redirect users to their respective dashboards based on role
 @app.route('/')
 def home():
     # If logged in direct dashboard
-    if session.get('role') == 'customer':
-        return redirect(url_for('customer.dashboard'))
-    elif session.get('role') == 'admin':
-        return redirect(url_for('admin.dashboard'))
+    #if session.get('role') == 'customer':
+        #return redirect(url_for('customer.dashboard')) 
+    #elif session.get('role') == 'admin':
+        #return redirect(url_for('admin.dashboard'))
     # Else show homepage
+    #return render_template('home.html')
+    # While we no customer dashboard, direct admins to their dashboard and show the home page for customers and guests
+    if session.get('role') == 'admin':
+        return redirect(url_for('admin.dashboard'))
+
+    # customers go to home (no redirect)
     return render_template('home.html')
 
 if __name__ == '__main__':
