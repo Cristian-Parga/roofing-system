@@ -1,28 +1,110 @@
 #customer_logic.py
 
-import uuid
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from database import get_db
+from datetime import date
 
-requests = {}
+customer = Blueprint('customer', __name__)
 
-def submit_request(name, address, description, contact_time, emergency=False):
-    rid = "REQ-" + str(uuid.uuid4())[:5].upper()
-    requests[rid] = {
-        "name": name,
-        "address": address,
-        "description": description,
-        "contact_time": contact_time,
-        "emergency": emergency,
-        "status": "Submitted"
-    }
-    print(f"Request submitted: {rid}")
-    return rid
+# Dashboard
+@customer.route('/customer/dashboard')
+def dashboard():
+    """Show all inspection requests for the logged in customer."""
+    if session.get('role') != 'customer':
+        flash('You must be logged in to view your dashboard.', 'error')
+        return redirect(url_for('auth.login'))
 
-def update_status(rid, status):
-    if rid in requests:
-        requests[rid]["status"] = status
-        print(f"{rid} → {status}")
+    customer_id = session.get('user_id')
+    conn = get_db()
 
-def show_requests(name):
-    for rid, r in requests.items():
-        if r["name"] == name:
-            print(f"{rid} | {r['address']} | {r['status']}")
+    # Get all requests for this customer
+    inspection_requests = conn.execute('''
+        SELECT * FROM inspection_request
+        WHERE customerID = ?
+        ORDER BY submittedDate DESC
+    ''', (customer_id,)).fetchall()
+
+    # Get counts for the stat cards
+    total    = len(inspection_requests)
+    active   = sum(1 for r in inspection_requests if r['status'] not in ['Completed', 'Cancelled'])
+    done     = sum(1 for r in inspection_requests if r['status'] == 'Completed')
+    emergency = sum(1 for r in inspection_requests if r['isEmergency'] == 1)
+
+    conn.close()
+    return render_template('customer_dashboard.html',
+                           requests=inspection_requests,
+                           total=total,
+                           active=active,
+                           done=done,
+                           emergency=emergency)
+
+#Submit inspetion request
+@customer.route('/request/new', methods=['GET', 'POST'])
+def new_request():
+    """Show inspection request form and handle submission."""
+    if session.get('role') != 'customer':
+        flash('You must be logged in to submit a request.', 'error')
+        return redirect(url_for('auth.login'))
+
+    if request.method == 'POST':
+        address      = request.form['address'].strip()
+        description  = request.form['description'].strip()
+        contact_time = request.form['contactTime']
+        is_emergency = 1 if request.form.get('emergency') else 0
+        customer_id  = session.get('user_id')
+        today        = str(date.today())
+
+        # Validate required fields
+        if not address:
+            flash('Property address is required.', 'error')
+            return redirect(url_for('customer.new_request'))
+
+        if not description:
+            flash('Please describe the issue.', 'error')
+            return redirect(url_for('customer.new_request'))
+
+        if not contact_time:
+            flash('Please select a preferred contact time.', 'error')
+            return redirect(url_for('customer.new_request'))
+
+        # Set status to Emergency Flagged if emergency checkbox checked
+        status = 'Emergency Flagged' if is_emergency else 'Pending'
+
+        conn = get_db()
+        conn.execute('''
+            INSERT INTO inspection_request
+            (customerID, propertyAddress, description, status, isEmergency, submittedDate)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (customer_id, address, description, status, is_emergency, today))
+        conn.commit()
+        conn.close()
+
+        flash('Your inspection request has been submitted successfully!', 'success')
+        return redirect(url_for('customer.dashboard'))
+
+    return render_template('request_form.html')
+
+#View request details
+
+@customer.route('/request/<int:request_id>')
+def view_status(request_id):
+    """Show detailed status of a single inspection request."""
+    if session.get('role') != 'customer':
+        flash('You must be logged in to view request status.', 'error')
+        return redirect(url_for('auth.login'))
+
+    conn = get_db()
+
+    # Get the specific request
+    inspection_request = conn.execute('''
+        SELECT * FROM inspection_request
+        WHERE requestID = ? AND customerID = ?
+    ''', (request_id, session.get('user_id'))).fetchone()
+
+    if not inspection_request:
+        flash('Request not found.', 'error')
+        conn.close()
+        return redirect(url_for('customer.dashboard'))
+
+    conn.close()
+    return render_template('request_status.html', req=inspection_request)
