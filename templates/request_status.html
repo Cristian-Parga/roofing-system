@@ -1,0 +1,27 @@
+<!-- Request Status -->
+
+{% extends "base.html" %}
+{% block content %}
+
+<div class = "page-header">
+    <h1>Request Status</h1>
+    <a href = "/customer/dashboard" class = "btn-secondary">Back to Dashboard</a>
+</div>
+
+<div class = "card">
+    <h3>Request Details</h3>
+    <p><strong>Property Address:</strong> {{ req['propertyAddress'] }}</p>
+    <p><strong>Description:</strong> {{ req['description'] }}</p>
+    <p><strong>Submitted:</strong> {{ req['submittedDate'] }}</p>
+    {% if req['isEmergency'] %}
+        <p style = "color: #721C24; font-weight: bold;">🚨 Emergency Request</p>
+    {% endif %}
+</div>
+
+<!-- Status progress tracker -->
+<div class = "card">
+  
+</div>
+
+
+{% endblock %}
