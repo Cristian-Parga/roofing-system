@@ -10,15 +10,89 @@
 
 <!-- Status -->
  <div class = "dashboard-grid"
-    <div class = "status-card">
+    <div class = "stat-card">
+        <div class = "stat-number">{{ total }}</div>
+        <div class = "stat-label">Total Requests</div>
+    </div>
+    <div class = "stat-card">
+        <div class = "stat-number">{{ active }}</div>
+        <div class = "stat-label">Active</div>
+    </div>
+    <div class = "stat-card">
+        <div class = "stat-number">{{ done }}</div>
+        <div class = "stat-label">Completed</div>
+    </div>
+    <div class = "stat-card">
+        <div class = "stat-number">{{ emergency }}</div>
+        <div class = "stat-label">Emergency</div>
     </div>
 </div>
 
+<!-- Requests Log-->
+{% if requests %}
+<table>
+    <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Property Address</th>
+            <th>Status</th>
+            <th>Emergency</th>
+            <th>Submitted</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req['requestID'] }}</td>
+            <td>{{ req['propertyAddress'] }}</td>
+            <td>
+                {% if req['status'] == 'Pending' %}
+                    <span class="status-badge status-pending">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Emergency Flagged' %}
+                    <span class="status-badge status-emergency">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Scheduled' %}
+                    <span class="status-badge status-scheduled">{{ req['status'] }}</span>
+                {% elif req['status'] == 'In Progress' %}
+                    <span class="status-badge status-progress">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Estimate Sent' %}
+                    <span class="status-badge status-estimate-sent">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Approved' %}
+                    <span class="status-badge status-approved">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Cancelled' %}
+                    <span class="status-badge status-cancelled">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Payment Pending' %}
+                    <span class="status-badge status-payment-pending">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Paid' %}
+                    <span class="status-badge status-paid">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Completed' %}
+                    <span class="status-badge status-completed">{{ req['status'] }}</span>
+                {% else %}
+                    <span class="status-badge status-pending">{{ req['status'] }}</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if req['isEmergency'] %}
+                    <span style = "color: #721C24; font-weight: bold;">🚨 Yes</span>
+                {% else %}
+                    No
+                {% endif %}
+            </td>
+            <td>{{ req['submitted'] }}</td>
+            <td>
+                <a href = "/request/{{ req['requestID'] }}" class = "btn-secondary">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-
-
-<!-- Requests -->
-
+{% else %}
+<div class = "card">
+    <h3>No requests found.</h3>
+    <p>You have not submitted any requests yet.</p>
+    <a href = "/request/new" class = "btn">Submit Your First Request</a>
+</div>
 
 {% endif %}
 {% endblock %}

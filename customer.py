@@ -25,18 +25,18 @@ def dashboard():
     ''', (customer_id,)).fetchall()
 
     # Get counts for the stat cards
-    total    = len(inspection_requests)
-    active   = sum(1 for r in inspection_requests if r['status'] not in ['Completed', 'Cancelled'])
-    done     = sum(1 for r in inspection_requests if r['status'] == 'Completed')
+    total     = len(inspection_requests)
+    active    = sum(1 for r in inspection_requests if r['status'] not in ['Completed', 'Cancelled'])
+    done      = sum(1 for r in inspection_requests if r['status'] == 'Completed')
     emergency = sum(1 for r in inspection_requests if r['isEmergency'] == 1)
 
     conn.close()
     return render_template('customer_dashboard.html',
-                           requests=inspection_requests,
-                           total=total,
-                           active=active,
-                           done=done,
-                           emergency=emergency)
+                           requests  = inspection_requests,
+                           total     = total,
+                           active    = active,
+                           done      = done,
+                           emergency = emergency)
 
 #Submit inspetion request
 @customer.route('/request/new', methods=['GET', 'POST'])
@@ -107,4 +107,4 @@ def view_status(request_id):
         return redirect(url_for('customer.dashboard'))
 
     conn.close()
-    return render_template('request_status.html', req=inspection_request)
+    return render_template('request_status.html', req = inspection_request)
