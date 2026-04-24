@@ -47,28 +47,35 @@
             <td>{{ req['requestID'] }}</td>
             <td>{{ req['propertyAddress'] }}</td>
             <td>
-                {% set status_class = {
-                    'Pending': 'status-pending',
-                    'Emergency Flagged': 'status-emergency',
-                    'Scheduled': 'status-scheduled',
-                    'In Progress': 'status-inprogress',
-                    'Estimate Sent': 'status-estimate-sent',
-                    'Approved': 'status-approved',
-                    'Completed': 'status-completed',
-                    'Payment Pending': 'status-payment-pending',
-                    'Paid': 'status-paid',
-                    'Cancelled': 'status-cancelled'
-                } %}
-                <span class = "status-badge {{ status_class.get(req['status'], 'status-pending')}}">
-                    {{ req['status'] }}
-                </span>
-            
+                {% if req['status'] == 'Pending' %}
+                    <span class="status-badge status-pending">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Emergency Flagged' %}
+                    <span class="status-badge status-emergency">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Scheduled' %}
+                    <span class="status-badge status-scheduled">{{ req['status'] }}</span>
+                {% elif req['status'] == 'In Progress' %}
+                    <span class="status-badge status-progress">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Estimate Sent' %}
+                    <span class="status-badge status-estimate-sent">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Approved' %}
+                    <span class="status-badge status-approved">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Cancelled' %}
+                    <span class="status-badge status-cancelled">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Payment Pending' %}
+                    <span class="status-badge status-payment-pending">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Paid' %}
+                    <span class="status-badge status-paid">{{ req['status'] }}</span>
+                {% elif req['status'] == 'Completed' %}
+                    <span class="status-badge status-completed">{{ req['status'] }}</span>
+                {% else %}
+                    <span class="status-badge status-pending">{{ req['status'] }}</span>
+                {% endif %}
             </td>
             <td>
                 {% if req['isEmergency'] %}
                     <span style = "color: #721C24; font-weight: bold;">🚨 Yes</span>
-                {% endif %}
-                    <span style = "color: #155724; font-weight: bold;">✅ No</span>
+                {% else %}
+                    No
                 {% endif %}
             </td>
             <td>{{ req['submitted'] }}</td>
