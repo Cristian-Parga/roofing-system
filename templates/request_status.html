@@ -20,8 +20,37 @@
 
 <!-- Status progress tracker -->
 <div class = "card">
-  
-</div>
+  <h3>Current status</h3>
+  {$ set all_statuses = [
+    'Pending': 1,
+    'Emergency Flagged': 2,
+    'Scheduled': 3,
+    'In Progress': 4,
+    'Estimate Sent': 5,
+    'Approved': 6,
+    'Completed': 7,
+    'Payment Pending': 8,
+    'Paid': 9,
+    'Cancelled': 10
+  ] %}
 
+  {% set current = req['status'] %}
+  <div class = "status-tracker">
+    {% for s in all_statuses %}
+      <div class = "tracker-step {% if all_statuses[s] < all_statuses[current] %}completed{% elif all_statuses[s] == all_statuses[current] %}current{% endif %}">
+        <div class = "tracker-dot">
+          {% if all_statuses.index[s] < all_statuses.index[current] %}
+            ✅
+          {% elif all_statuses[s] == all_statuses[current] %}
+            🔄
+          {% else %}
+            ⏳
+          {% endif %}
+        </div>
+        <div class = "tracker-label">{{ s }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 
 {% endblock %}
