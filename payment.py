@@ -57,7 +57,7 @@ def make_payment(estimate_id):
     if not estimate:
         flash('Estimate not found.','error')
         conn.close()
-        return redirect(url_for('payment.view_payment'))
+        return redirect(url_for('payment.view_payments'))
     if request.method == 'POST':
         # Card input from form
         card_number = request.form['cardNumber'].replace(' ', '')
@@ -160,7 +160,7 @@ def receipt(receipt_number):
     conn.close()
     if not payment_record:
         flash('Receipt not found.', 'error')
-        return redirect(url_for('payment.view_payment'))
+        return redirect(url_for('payment.view_payments'))
     return render_template('receipt.html', payment = payment_record)
 
 # Payment History
