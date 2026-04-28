@@ -5,6 +5,7 @@
 # Date: Apr 4, 2026
 
 from flask import Flask, redirect, render_template, session, url_for
+from werkzeug.security import generate_password_hash
 from database import get_db, init_db
 from auth import auth
 from reviews import reviews
@@ -24,9 +25,23 @@ app.register_blueprint(careers_bp)
 app.register_blueprint(payment)
 app.register_blueprint(customer)
 
-# Initiate database tables when the app opens
+# Initiate database tables when the app opens and auto create admin on every startup
 with app.app_context():
     init_db()
+    conn = get_db()
+    existing = conn.execute(
+        'SELECT email FROM administrator WHERE email = ?',
+        ('admin@test.com',)
+    ).fetchone()
+    if not existing:
+        conn.execute('''
+            INSERT INTO administrator (name, email, password, role)
+            VALUES (?, ?, ?, ?)
+        ''', ('Demo Admin', 'admin@test.com',
+              generate_password_hash('admin123'), 'Admin'))
+        conn.commit()
+        print("Admin account created automatically")
+    conn.close()
 
 # Redirect users to their respective dashboards based on role
 @app.route('/')
