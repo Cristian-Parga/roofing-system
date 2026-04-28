@@ -52,6 +52,7 @@ def init_db():
             customerID      INTEGER NOT NULL,
             propertyAddress TEXT NOT NULL,
             description     TEXT NOT NULL,
+            contactTime     TEXT,
             status          TEXT NOT NULL DEFAULT 'Pending',
             isEmergency     INTEGER NOT NULL DEFAULT 0,
             photoURL        TEXT,

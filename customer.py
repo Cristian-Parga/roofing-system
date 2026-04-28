@@ -73,9 +73,9 @@ def new_request():
         conn = get_db()
         conn.execute('''
             INSERT INTO inspection_request
-            (customerID, propertyAddress, description, status, isEmergency, submittedDate)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (customer_id, address, description, status, is_emergency, today))
+            (customerID, propertyAddress, description, contactTime, status, isEmergency, submittedDate)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (customer_id, address, description, contact_time, status, is_emergency, today))
         conn.commit()
         conn.close()
 
