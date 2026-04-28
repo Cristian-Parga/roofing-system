@@ -21,7 +21,7 @@
                     name = "amount" 
                     min ="0.01" 
                     max = "{{ estimate['balance'] }}"
-                   value = {{ "%.2f"|format(estimate['balance']) }}"
+                   value="{{ "%.2f"|format(estimate['balance']) }}"
                    required>
         </div>
         <div class = "form-group">
@@ -48,7 +48,7 @@
                 <input type = "text" 
                         name = "cvv" 
                         placeholder = "123"
-                        maxlength = "4"
+                        maxlength = "3"
                         pattern = "\d{3,4}"
                         required>
             </div>

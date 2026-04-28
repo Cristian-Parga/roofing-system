@@ -2,33 +2,19 @@
 
 {% extends 'base.html' %}
 {% block content %}
-<div class = "receipt-box"></div>
-    <h2>Payment Receipt</h2>
-    <p style = "color: #555555; margin-bottom: 24px">
-        Thank you for your payment! Below is a summary of your transaction.
-    </p>
-    <div class = "receipt-row">
-        <span>Receipt Number</span>
-        <span><strong>{{ payment['receiptNumber'] }}</strong></span>
-    </div>
-    <div class = "receipt-row">
-        <span>Property</span>
-        <span><strong>{{ payment['propertyAddress'] }}</strong></span>
-    </div>
-    <div class = "receipt-row">
-        <span>Payment Date</span>
-        <span><strong>{{ payment['paymentDate'] }}</strong></span>
-    </div>
-    <div class = "receipt-row">
-        <span>Card</span>
-        <span>**** **** **** {{ payment['cardLastFour'] }}</span>
-    </div>
-    <div class = "receipt-row">
-        <span>Amount Paid</span>
-        <span>${{ "%.2f"|format(payment['amount']) }}</span>
-    </div>
-    <div style = "text-align: center; margin-top: 24px;">
-        <a href = "/payment" class = "btn">View Payment History</a>
-        <a href = "/customer/dashboard" class = "btn-secondary" style = "margin-left: 16px;">Go to Dashboard</a>
-    </div>
+
+<div class="page-header">
+    <h1>Payment Confirmed</h1>
+</div>
+
+<div class="card">
+    <h2>Payment Confirmed</h2>
+    <p><strong>Receipt Number:</strong> {{ payment['receiptNumber'] }}</p>
+    <p><strong>Property:</strong> {{ payment['propertyAddress'] }}</p>
+    <p><strong>Amount Paid:</strong> ${{ "%.2f"|format(payment['amount']) }}</p>
+    <p><strong>Date:</strong> {{ payment['paymentDate'] }}</p>
+    <p><strong>Card:</strong> **** **** **** {{ payment['cardLastFour'] }}</p>
+    <a href="/payment" class="btn" style="margin-top: 16px;">Back to Payments</a>
+</div>
+
 {% endblock %}

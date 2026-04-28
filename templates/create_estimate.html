@@ -1,0 +1,38 @@
+<!-- Admin form to create an estimate -->
+
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="form-container">
+    <h2>Create Estimate</h2>
+
+    <div class="card" style="margin-bottom: 24px;">
+        <p><strong>Request ID:</strong> REQ-{{ req['requestID'] }}</p>
+        <p><strong>Customer:</strong> {{ req['customerName'] }}</p>
+        <p><strong>Property:</strong> {{ req['propertyAddress'] }}</p>
+        <p><strong>Description:</strong> {{ req['description'] }}</p>
+        {% if req['isEmergency'] %}
+            <p style="color: #721C24; font-weight: bold;">🚨 Emergency Request</p>
+        {% endif %}
+    </div>
+
+    <form method="POST" action="/admin/estimate/create/{{ req['requestID'] }}">
+
+        <div class="form-group">
+            <label>Total Cost ($)</label>
+            <input type="number"
+                   name="totalCost"
+                   step="0.01"
+                   min="0.01"
+                   placeholder="Enter the total repair cost"
+                   required>
+        </div>
+
+        <button type="submit" class="btn">Create Estimate</button>
+        <a href="/admin/dashboard"
+           style="margin-left: 16px; font-size: 14px;">Cancel</a>
+
+    </form>
+</div>
+
+{% endblock %}

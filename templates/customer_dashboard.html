@@ -9,24 +9,9 @@
 </div>
 
 <!-- Status -->
- <div class = "dashboard-grid"
-    <div class = "stat-card">
-        <div class = "stat-number">{{ total }}</div>
-        <div class = "stat-label">Total Requests</div>
-    </div>
-    <div class = "stat-card">
-        <div class = "stat-number">{{ active }}</div>
-        <div class = "stat-label">Active</div>
-    </div>
-    <div class = "stat-card">
-        <div class = "stat-number">{{ done }}</div>
-        <div class = "stat-label">Completed</div>
-    </div>
-    <div class = "stat-card">
-        <div class = "stat-number">{{ emergency }}</div>
-        <div class = "stat-label">Emergency</div>
-    </div>
-</div>
+<p style="margin-bottom: 24px; color: #555555;">
+    You have {{ total }} inspection request(s) on file.
+</p>
 
 <!-- Requests Log-->
 {% if requests %}
@@ -78,7 +63,7 @@
                     No
                 {% endif %}
             </td>
-            <td>{{ req['submitted'] }}</td>
+            <td>{{ req['submittedDate'] }}</td>
             <td>
                 <a href = "/request/{{ req['requestID'] }}" class = "btn-secondary">View Details</a>
             </td>

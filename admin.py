@@ -6,6 +6,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from functools import wraps
 from database import get_db
+from datetime import date
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -106,3 +107,58 @@ def review_application(app_id):
     conn.close()
     flash(f'Application #{app_id} {decision.lower()}.', 'success')
     return redirect(url_for('admin.applications'))
+
+@admin_bp.route('/estimate/create/<int:request_id>', methods=['GET', 'POST'])
+@admin_required
+def create_estimate(request_id):
+    """Create an estimate for an inspection request."""
+    conn = get_db()
+
+    inspection_request = conn.execute('''
+        SELECT ir.*, c.name as customerName
+        FROM inspection_request ir
+        JOIN customer c ON ir.customerID = c.customerID
+        WHERE ir.requestID = ?
+    ''', (request_id,)).fetchone()
+
+    if not inspection_request:
+        flash('Request not found.', 'error')
+        conn.close()
+        return redirect(url_for('admin.dashboard'))
+
+    if request.method == 'POST':
+        total_cost = request.form['totalCost']
+
+        try:
+            total_cost = float(total_cost)
+        except ValueError:
+            flash('Please enter a valid cost amount.', 'error')
+            conn.close()
+            return redirect(url_for('admin.create_estimate', request_id=request_id))
+
+        if total_cost <= 0:
+            flash('Total cost must be greater than zero.', 'error')
+            conn.close()
+            return redirect(url_for('admin.create_estimate', request_id=request_id))
+
+        today = str(date.today())
+
+        conn.execute('''
+            INSERT INTO estimate (requestID, totalCost, amountPaid, balance, createdDate, approvalStatus)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (request_id, total_cost, 0.00, total_cost, today, 'Approved'))
+
+        conn.execute('''
+            UPDATE inspection_request
+            SET status = 'Estimate Sent'
+            WHERE requestID = ?
+        ''', (request_id,))
+
+        conn.commit()
+        conn.close()
+
+        flash(f'Estimate of ${total_cost:.2f} created successfully.', 'success')
+        return redirect(url_for('admin.dashboard'))
+
+    conn.close()
+    return render_template('create_estimate.html', req=inspection_request)

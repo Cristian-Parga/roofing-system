@@ -1,63 +1,77 @@
-{% extends 'base.html' %}
+<!-- Admin view for applications-->
 
+{% extends 'base.html' %}
 {% block content %}
-<div class="container">
-    <h2>Job Applications</h2>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert {{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Applicant</th>
-                <th>Contact</th>
-                <th>Resume</th>
-                <th>Submitted</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for app in applications %}
-            <tr>
-                <td>{{ app.applicantName }}</td>
-                <td>{{ app.email }}<br>{{ app.phone }}</td>
-                <td>
-                    {% if app.resumeFile %}
-                        <a href="{{ url_for('static', filename='uploads/resumes/' + app.resumeFile) }}" 
-                           target="_blank" class="btn btn-sm btn-outline-secondary">View Resume</a>
-                    {% else %}
-                        <span class="text-muted">No file</span>
-                    {% endif %}
-                </td>
-                <td>{{ app.submittedDate }}</td>
-                <td>
-                    <span class="badge badge-{{ 'warning' if app.status == 'Pending' else 'success' if app.status == 'Approved' else 'danger' }}">
-                        {{ app.status }}
-                    </span>
-                </td>
-                <td>
-                    {% if app.status == 'Pending' %}
-                    <form method="POST" action="{{ url_for('admin.review_application', app_id=app.applicationID) }}" 
-                          style="display:inline;" onsubmit="return confirm('Are you sure?');">
-                        <button type="submit" name="decision" value="Approved" class="btn btn-sm btn-success">Approve</button>
-                        <button type="submit" name="decision" value="Rejected" class="btn btn-sm btn-danger">Reject</button>
-                    </form>
-                    {% else %}
-                        <span class="text-muted">Decision made</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% else %}
-            <tr><td colspan="6" class="text-center">No job applications submitted yet.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<div class="page-header">
+    <h1>Job Applications</h1>
 </div>
+    
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+    
+<table>
+    <thead>
+        <tr>
+            <th>Applicant</th>
+            <th>Contact</th>
+            <th>Resume</th>
+            <th>Submitted</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for app in applications %}
+        <tr>
+            <td>{{ app.applicantName }}</td>
+            <td>{{ app.email }}<br><small>{{ app.phone }}</small></td>
+            <td>
+                {% if app.resumeFile %}
+                    <a href="{{ url_for('static', filename='uploads/resumes/' + app.resumeFile) }}"
+                       target="_blank" class="btn-small">View Resume</a>
+                {% else %}
+                    <span style="color: #888888;">No file</span>
+                {% endif %}
+            </td>
+            <td>{{ app.submittedDate }}</td>
+            <td>
+                <span class="status-badge
+                    {% if app.status == 'Pending' %}status-pending
+                    {% elif app.status == 'Approved' %}status-approved
+                    {% elif app.status == 'Rejected' %}status-cancelled
+                    {% endif %}">
+                    {{ app.status }}
+                </span>
+            </td>
+            <td>
+                {% if app.status == 'Pending' %}
+                <form method="POST"
+                      action="{{ url_for('admin.review_application', app_id=app.applicationID) }}"
+                      style="display: flex; gap: 6px;"
+                      onsubmit="return confirm('Are you sure?');">
+                    <button type="submit" name="decision" value="Approved"
+                            class="btn-small">Approve</button>
+                    <button type="submit" name="decision" value="Rejected"
+                            class="btn-small btn-danger">Reject</button>
+                </form>
+                {% else %}
+                    <span style="color: #888888; font-size: 13px;">Decision made</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" style="text-align: center; padding: 20px; color: #888888;">
+                No job applications submitted yet.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

@@ -1,7 +1,8 @@
 <!-- Display customer's reviews -->
-{% extends "base.html" %}
 
+{% extends "base.html" %}
 {% block content %}
+
 <div class = "page-header">
     <h1>Customer Reviews</h1>
     {% if session.get('role') == 'customer' %}
@@ -13,7 +14,7 @@
     {% for review in reviews %}
     <div class = "card">
         <div style = "display: flex; justify-content: space-between; align-items: center;">
-            <h3>{{ review.customer_name }}</h3>
+            <h3>{{ review['customerName'] }}</h3>
             <span class = "ts" style = "color: #888888; font-size: 12px;">{{review['submittedDate']}}</span>
         </div>
         <!-- Star Rating -->
@@ -25,12 +26,12 @@
                     ☆
             {% endfor %}
         </div>
-        <p style = "margin-top: 10px;">{{ review['comment'] }}</p>
+        <p style = "margin-top: 10px;">{{ review['comments'] }}</p>
     </div>
     {% endfor %}
 {% else %}
     <div class = "card">
         <p>No reviews yet. Be the first to leave a review!</p>
-    </div>>
+    </div>
 {% endif %}
 {% endblock %}

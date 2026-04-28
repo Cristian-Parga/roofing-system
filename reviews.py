@@ -35,7 +35,7 @@ def submit_review():
         star_rating = request.form['starRating']
         comments = request.form['comments']
         today = str(date.today())
-    # Validate input
+        # Validate input
         if not comments:
             flash('Please enter a comment.', 'error')
             return redirect(url_for('reviews.submit_review'))

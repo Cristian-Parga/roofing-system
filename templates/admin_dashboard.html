@@ -1,51 +1,72 @@
-{% extends 'base.html' %}
+<!-- Admin dashboard showing all inspection requests -->
 
+{% extends 'base.html' %}
 {% block content %}
-<div class="container">
-    <h2>Admin Dashboard - Inspection Requests</h2>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert {{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Request ID</th>
-                <th>Customer</th>
-                <th>Property Address</th>
-                <th>Status</th>
-                <th>Emergency</th>
-                <th>Submitted</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for req in requests %}
-            <tr>
-                <td>#{{ req.requestID }}</td>
-                <td>{{ req.customerName }}<br><small>{{ req.email }}</small></td>
-                <td>{{ req.propertyAddress }}</td>
-                <td>
-                    <span class="badge badge-{{ 'warning' if req.status == 'Pending' else 'success' if req.status in ['Completed', 'Paid'] else 'info' }}">
-                        {{ req.status }}
-                    </span>
-                </td>
-                <td>{% if req.isEmergency %}🚨 Yes{% else %}No{% endif %}</td>
-                <td>{{ req.submittedDate }}</td>
-                <td>
-                    <a href="{{ url_for('admin.update_status', request_id=req.requestID) }}" 
-                       class="btn btn-sm btn-primary">Update Status</a>
-                </td>
-            </tr>
-            {% else %}
-            <tr><td colspan="7" class="text-center">No inspection requests found.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<div class = "page-header">
+    <h1>Admin Dashboard - Inspection Requests</h1>
 </div>
+    
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>Customer</th>
+            <th>Property Address</th>
+            <th>Status</th>
+            <th>Emergency</th>
+            <th>Submitted</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>#{{ req.requestID }}</td>
+            <td>{{ req.customerName }}<br><small>{{ req.email }}</small></td>
+            <td>{{ req.propertyAddress }}</td>
+            <td>
+                <span class="status-badge
+                    {% if req.status == 'Pending' %}status-pending
+                    {% elif req.status == 'Emergency Flagged' %}status-emergency
+                    {% elif req.status == 'Scheduled' %}status-scheduled
+                    {% elif req.status == 'In Progress' %}status-progress
+                    {% elif req.status == 'Estimate Sent' %}status-estimate-sent
+                    {% elif req.status == 'Approved' %}status-approved
+                    {% elif req.status == 'Cancelled' %}status-cancelled
+                    {% elif req.status == 'Payment Pending' %}status-payment-pending
+                    {% elif req.status == 'Paid' %}status-paid
+                    {% elif req.status == 'Completed' %}status-completed
+                    {% endif %}">
+                    {{ req.status }}
+                </span>
+            </td>
+            <td>{% if req.isEmergency %}🚨 Yes{% else %}No{% endif %}</td>
+            <td>{{ req.submittedDate }}</td>
+            <td>
+                <a href="{{ url_for('admin.update_status', request_id=req.requestID) }}" 
+                       class="btn-small">Update Status</a>
+                <a href="{{ url_for('admin.create_estimate', request_id=req.requestID) }}" 
+                    class="btn-small" style="background-color: #C4460A; margin-top: 4px;">Create Estimate
+                </a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="7" style="text-align: center; padding: 20px; color: #888888;">
+                No inspection requests found.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
