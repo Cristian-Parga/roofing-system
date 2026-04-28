@@ -28,7 +28,8 @@ python app.py
 http://127.0.0.1:5001
 
 ## Demo Accounts
-| Admin | admin@test.com | admin123 | /n
+| Admin | admin@test.com | admin123 |
+
 | Customer | Register a new account |
 
 ## Features
