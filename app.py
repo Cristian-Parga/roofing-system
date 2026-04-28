@@ -39,21 +39,5 @@ def home():
     # Else show homepage
     return render_template('home.html')
     
-@app.route('/setup-admin')
-def setup_admin():
-    from werkzeug.security import generate_password_hash
-    conn = get_db()
-    try:
-        conn.execute('''
-            INSERT INTO administrator (name, email, password, role)
-            VALUES (?, ?, ?, ?)
-        ''', ('Demo Admin', 'admin@test.com', generate_password_hash('admin123'), 'Admin'))
-        conn.commit()
-        conn.close()
-        return 'Admin created successfully. Delete this route now.'
-    except:
-        conn.close()
-        return 'Admin already exists.'
-
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
