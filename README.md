@@ -1,9 +1,12 @@
 # Natsu Roofing Management System
 
-A web-based roofing service management system built with Python and Flask.
+A web based roofing service management system built with Python and Flask.
 Allows customers to submit inspection requests, track project status, make
 payments, and leave reviews. Administrators can manage requests, create
 estimates, and review job applications.
+
+## Live demo
+https://natsu-roofing.onrender.com
 
 ## Built using Python, Flask, HTML/CSS, SQLite
 
@@ -16,7 +19,7 @@ source venv/bin/activate        # Mac
 venv\Scripts\activate           # Windows
 
 **3. Install dependencies**
-pip install flask werkzeug
+pip install -r requirements.txt
 
 **4. Create the admin account**
 python setup_demo_admin.py
@@ -27,7 +30,7 @@ python app.py
 **6. Open in browser**
 http://127.0.0.1:5001
 
-## Demo Accounts
+## Demo accounts
 | Admin | admin@test.com | admin123 |
 
 | Customer | Register a new account |
@@ -48,5 +51,5 @@ http://127.0.0.1:5001
 - Khoi Tran
 
 ## Course
-Software Engineering — University of Houston-Downtown
+Software Engineering: University of Houston - Downtown
 
